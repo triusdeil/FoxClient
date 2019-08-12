@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Data.SqlClient;
 using System.IO;
+using System.Text.RegularExpressions;
 
 namespace FoxClient
 {
@@ -18,11 +19,92 @@ namespace FoxClient
         {
             InitializeComponent();
         }
+        private void Cargar_Estado_Icono()
+        {
+            try
+            {
+                foreach(DataGridViewRow row in dataListado.Rows)
+                {
+                    try
+                    {
+                        string Icono = Convert.ToString(row.Cells["Nombre_de_Icono"].Value);
 
+                        if (Icono == "1")
+                        {
+                            pictureBox4.Visible = false;
+
+                        }else if(Icono == "2")
+                        {
+                            pictureBox5.Visible = false;
+                        }
+                        else if (Icono == "3")
+                        {
+                            pictureBox6.Visible = false;
+                        }
+                        else if (Icono == "4")
+                        {
+                            pictureBox7.Visible = false;
+                        }
+                        else if (Icono == "5")
+                        {
+                            pictureBox8.Visible = false;
+                        }
+                        else if (Icono == "6")
+                        {
+                            pictureBox13.Visible = false;
+                        }
+                        else if (Icono == "7")
+                        {
+                            pictureBox14.Visible = false;
+                        }
+                        else if (Icono == "8")
+                        {
+                            pictureBox15.Visible = false;
+                        }
+                        else if (Icono == "9")
+                        {
+                            pictureBox14.Visible = false;
+                        }
+
+                    }catch(Exception ex){
+
+                    }
+                }
+            }catch(Exception ex)
+            {
+                
+            }
+        }
+        public bool Validar_Mail(string sMail)
+        {
+            return Regex.IsMatch(sMail,@"^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z09-]+(\.[_a-z0-9-]+)*(\.[a-z]{2,4})$");
+        }
         private void ToolStripMenuItem2_Click(object sender, EventArgs e)
         {
+            if (Validar_Mail(txtCorreo.Text) == false)
+            {
+                MessageBox.Show("La direccion de correo electronico no valida, el correo el formato: nombre@dominio.com," + "por favor seleccione un correo valido", "validacion de correo", MessageBoxButtons.OK);                         txtCorreo.Focus();
+                txtCorreo.Focus();
+                txtCorreo.SelectAll();
+            }
+            else
+            {
+
+            
             if(txtNombre.Text != "")
             {
+                    if(txtNombre.Text != "")
+                    {
+                        if (lblAnuncioIcono.Visible == false)
+                        {
+
+                        
+                        if(txtRol.Text != "")
+                        {
+
+                        
+                    
+
                 try
                 {
                     SqlConnection con = new SqlConnection();
@@ -67,7 +149,23 @@ namespace FoxClient
                     //recuerda que se valida el login en el sql server
                     MessageBox.Show(ex.Message);
                 }
-            }
+                                //
+                            }
+                            else {
+                                MessageBox.Show("Elija un rol", "Registro", MessageBoxButtons.OK);
+                            }
+                        }
+                        else
+                        {
+                            MessageBox.Show("Elija un icono", "Registro", MessageBoxButtons.OK);
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("Asegurese de haber llenado todos los campos", "Registro", MessageBoxButtons.OK);
+                    }
+                  }
+                }
         }
         //proceso independiente para mostrar
         private void mostrar()
@@ -99,6 +197,7 @@ namespace FoxClient
             {
                 MessageBox.Show(ex.Message);
             }
+            Conexion.Tamaño_automatico_de_datatables.Multilinea(ref dataListado);
           
 
         }
@@ -113,6 +212,7 @@ namespace FoxClient
 
         private void LblAnuncioIcono_Click(object sender, EventArgs e)
         {
+            Cargar_Estado_Icono();
             panelIcono.Visible = true;
         }
 
@@ -286,6 +386,7 @@ namespace FoxClient
 
         private void Icono_Click(object sender, EventArgs e)
         {
+            Cargar_Estado_Icono();
             panelIcono.Visible = true;
         }
 
@@ -338,6 +439,86 @@ namespace FoxClient
                 }
             }
           
+        }
+        //estamos llamando a una imagen que se encuentre en el directorio
+        private void PictureBox10_Click(object sender, EventArgs e)
+        {
+            dlg.InitialDirectory = "";
+            dlg.Filter = "Imagenes|*.jpg;*.png;";
+            dlg.FilterIndex = 2;
+            dlg.Title = "Cargador de imagenes FoxClient";
+            if (dlg.ShowDialog() == DialogResult.OK)
+            {
+                Icono.BackgroundImage = null;
+                Icono.Image = new Bitmap(dlg.FileName);
+                Icono.SizeMode = PictureBoxSizeMode.Zoom;
+                lblnumeroIcono.Text = Path.GetFileName(dlg.FileName);
+                lblAnuncioIcono.Visible = false;
+                panelIcono.Visible = false;
+            }
+        }
+        private void buscar_usuario()
+        {
+            try
+            {
+                //mostrar los datos en datagridview
+                DataTable dt = new DataTable();
+                SqlDataAdapter da;
+                SqlConnection con = new SqlConnection();
+                con.ConnectionString = Conexion.CONEXIONMAESTRA.conexion;
+                con.Open();
+
+                //declarar el proceso que vamos a llamar
+                da = new SqlDataAdapter("buscar_usuario", con);
+                da.SelectCommand.CommandType = CommandType.StoredProcedure;
+                da.SelectCommand.Parameters.AddWithValue("@letra", txtBuscar.Text);
+                da.Fill(dt);
+                //donde vamos a mostrar los datos
+                dataListado.DataSource = dt;
+                con.Close();
+
+                //ocultar columnas
+                dataListado.Columns[1].Visible = false;
+                dataListado.Columns[5].Visible = false;
+                dataListado.Columns[6].Visible = false;
+                dataListado.Columns[7].Visible = false;
+                dataListado.Columns[8].Visible = false;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            Conexion.Tamaño_automatico_de_datatables.Multilinea(ref dataListado);
+
+
+        }
+
+        private void TxtBuscar_TextChanged(object sender, EventArgs e)
+        {
+            buscar_usuario();
+        }
+        public void Numero(System.Windows.Forms.TextBox CajaTexto, System.Windows.Forms.KeyPressEventArgs e)
+        {
+            if (Char.IsDigit(e.KeyChar))
+            {
+                e.Handled = false;
+            } else if (Char.IsControl(e.KeyChar))
+             {
+                e.Handled = false;
+            }else
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void TxtPassword_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            Numero(txtBuscar, e);
+        }
+
+        private void Button1_Click(object sender, EventArgs e)
+        {
+            Close();
         }
     }
     }

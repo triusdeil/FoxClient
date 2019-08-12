@@ -16,7 +16,7 @@ namespace FoxClient
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Usuariook());
+            Application.Run(new Modulos.Login());
         }
     }
 }
