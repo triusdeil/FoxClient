@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Data.SqlClient;
 using System.IO;
+using FoxClient.Modulos;
 namespace FoxClient.Modulos
 {
     public partial class Login : Form
@@ -90,6 +91,41 @@ namespace FoxClient.Modulos
         {
             DIBUJARusuarios();
 
+        }
+        private void cargar_usuario()
+        {
+            try
+            {
+                //mostrar los datos en datagridview
+                DataTable dt = new DataTable();
+                SqlDataAdapter da;
+                SqlConnection con = new SqlConnection();
+                con.ConnectionString = Conexion.CONEXIONMAESTRA.conexion;
+                con.Open();
+
+                //declarar el proceso que vamos a llamar
+                da = new SqlDataAdapter("validar_usuario", con);
+                da.SelectCommand.CommandType = CommandType.StoredProcedure;
+                da.SelectCommand.Parameters.AddWithValue("@password", txtpassword.Text);
+                da.SelectCommand.Parameters.AddWithValue("@login", txtBuscar.Text);
+                da.Fill(dt);
+                //donde vamos a mostrar los datos
+                dataListado.DataSource = dt;
+                con.Close();
+
+          
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            
+
+        }
+
+        private void Txtpassword_TextChanged(object sender, EventArgs e)
+        {
+            
         }
     }
 }
