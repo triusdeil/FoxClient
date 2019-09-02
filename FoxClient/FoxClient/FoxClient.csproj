@@ -33,8 +33,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.AnalysisServices, Version=12.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.Management.Instrumentation" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -48,25 +51,52 @@
   <ItemGroup>
     <Compile Include="Conexion\CONEXIONMAESTRA.cs" />
     <Compile Include="Conexion\Tamaño_automatico_de_datatables.cs" />
-    <Compile Include="Modulos\Login.cs">
+    <Compile Include="Modulos\CAJA\APERTURA_DE_CAJA.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Modulos\Login.Designer.cs">
+    <Compile Include="Modulos\CAJA\APERTURA_DE_CAJA.Designer.cs">
+      <DependentUpon>APERTURA_DE_CAJA.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Modulos\CAJA\CIERRE_DE_CAJA.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Modulos\CAJA\CIERRE_DE_CAJA.Designer.cs">
+      <DependentUpon>CIERRE_DE_CAJA.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Modulos\LOGIN\Login.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Modulos\LOGIN\Login.Designer.cs">
       <DependentUpon>Login.cs</DependentUpon>
     </Compile>
-    <Compile Include="Modulos\usuariosok.cs">
+    <Compile Include="Modulos\USUARIOS_Y_PERMISOS\usuariosok.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Modulos\usuariosok.Designer.cs">
+    <Compile Include="Modulos\USUARIOS_Y_PERMISOS\usuariosok.Designer.cs">
       <DependentUpon>usuariosok.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Modulos\VENTAS MENU PRINCIPAL\VENTAS_MENU_PRINCIPALOK.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Modulos\VENTAS MENU PRINCIPAL\VENTAS_MENU_PRINCIPALOK.Designer.cs">
+      <DependentUpon>VENTAS_MENU_PRINCIPALOK.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Modulos\Login.resx">
+    <EmbeddedResource Include="Modulos\CAJA\APERTURA_DE_CAJA.resx">
+      <DependentUpon>APERTURA_DE_CAJA.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Modulos\CAJA\CIERRE_DE_CAJA.resx">
+      <DependentUpon>CIERRE_DE_CAJA.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Modulos\LOGIN\Login.resx">
       <DependentUpon>Login.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Modulos\usuariosok.resx">
+    <EmbeddedResource Include="Modulos\USUARIOS_Y_PERMISOS\usuariosok.resx">
       <DependentUpon>usuariosok.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Modulos\VENTAS MENU PRINCIPAL\VENTAS_MENU_PRINCIPALOK.resx">
+      <DependentUpon>VENTAS_MENU_PRINCIPALOK.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -90,6 +120,8 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Modulos\LOGIN\HTMLPage1.html" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
